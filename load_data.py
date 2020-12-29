@@ -15,9 +15,10 @@ def load_pairs():
 
     field = {'label': ('label', LABEL), 'text1': ('text1', TEXT1), 'text2': ('text2', TEXT2),
              'onehot1':('onehot1', ONEHOT), 'onehot2':('onehot2', ONEHOT)}
-    field1 = {'id': ('id', ID), 'text': ('text', TEXT1), 'label': ('label', LABEL), 'onehot':('onehot', ONEHOT)}
+    field1 = {'id': ('id', ID), 'text': ('text', TEXT1), 'label': ('label', LABEL),
+              'onehot':('onehot', ONEHOT)}
 
-    train_pairs, valid_pairs = data.TabularDataset.splits(
+    train_pairs, valid_pairs = data.TabularDataset.splits(  # 切分语料库
         path='./data/',
         train='train_pairs.json',
         validation='val_pairs.json',
@@ -34,6 +35,9 @@ def load_pairs():
 
     vectors = torchtext.vocab.Vectors(name='./data/fasttext.vec')
     TEXT1.build_vocab(train_pairs, vectors=vectors)
+    # build_vocab构建语料库的vocabulary同时加载word-embedding
+    # 从预训练的vectors中，将当前corpus词汇表的词向量抽取出来，构成当前corpus的Vocab（词汇表）
+    # 自动构建embedding矩阵
     TEXT2.build_vocab(train_pairs, vectors=vectors)
 
 

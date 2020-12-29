@@ -67,8 +67,8 @@ class MSCNN_network(nn.Module):
         x = self.liner(x)
         cnn_out = self.label(x)
 
-        q_w = self.liner_onehot(onehot)
-        q_w = self.rel(q_w / math.sqrt(self.d))
+        q_w = self.liner_onehot(onehot)  # wq_c + b of paper
+        q_w = self.rel(q_w / math.sqrt(self.d))  # d = 103 等于所有类别的总数  q_w == h_c of paper
 
         return x, q_w, cnn_out
 
@@ -80,7 +80,7 @@ class MSCNN_network(nn.Module):
             x2, q_w2, cnn_out2 = self.forward_one(input2, onehot2)
             out2 = self.sig(x2)
 
-            dis = torch.abs(out1 - out2)
+            dis = torch.abs(out1 - out2)  # 求两者的绝对值
             tmp = torch.mul(dis, q_w2)
             out = self.out(tmp)
 

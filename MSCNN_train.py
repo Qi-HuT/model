@@ -44,6 +44,9 @@ def train(train_pair_iter, val_pair_iter, model, patience):
             loss1 = loss_fn(out, label)
             loss2 = loss_fn(cnn_out1, label1)
             loss3 = loss_fn(cnn_out2, label2)
+            # formula of paper
+            # L = l_sL_s + l_m1L_m1 + l_m2L_m2
+            # but l_s = l_m1 = l_m2 = 1
             loss = loss1 + loss2 + loss3
 
             train_losses.append(loss.item())

@@ -32,7 +32,7 @@ if torch.cuda.is_available():
     sia_model.cuda()
 
 
-siamese_model_dict = sia_model.state_dict()
+siamese_model_dict = sia_model.state_dict() # state_dict()其实返回的是一个OrderDict，存储了网络结构的名字和对应的参数
 cnn_model_dict = torch.load('./data/CNN_checkpoint.pt')
 state_dict = {k: v for k, v in cnn_model_dict.items() if k in siamese_model_dict.keys()}
 siamese_model_dict.update(state_dict)
@@ -42,7 +42,7 @@ print('Start training siamese networks............')
 model, train_loss_record, val_loss_record = train(train_pairs_iter, valid_pairs_iter, sia_model, patience)
 
 print('开始进行分类判断与分析．．．．')
-train_result = get_compare(train_data_iter, model)
+train_result = get_compare(train_data_iter, model)  # Sampling.method.Classification of paper
 
 print(len(train_result))
 print('开始预测分类．．．．')
