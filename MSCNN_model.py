@@ -38,7 +38,7 @@ class MSCNN_network(nn.Module):
         self.conv3 = nn.Conv2d(in_channels, out_channels, (kernel_size[2], embedding_size), stride, padding)
         self.dropout = nn.Dropout(keep_probab)
         self.liner = nn.Linear(len(kernel_size)*out_channels, 1024)
-        self.label = nn.Linear(1024, 103)
+        self.label = nn.Linear(1024, 103)  # 103个类别
         self.sig = nn.Sigmoid()
         self.out = nn.Linear(1024, output_size)
         self.liner_onehot = nn.Linear(103, 1024)
@@ -66,7 +66,7 @@ class MSCNN_network(nn.Module):
 
         x = self.liner(x)
         cnn_out = self.label(x)
-
+        # onehot Denoting the one-hot encoding of category c as qc
         q_w = self.liner_onehot(onehot)  # wq_c + b of paper
         q_w = self.rel(q_w / math.sqrt(self.d))  # d = 103 等于所有类别的总数  q_w == h_c of paper
 
@@ -74,6 +74,7 @@ class MSCNN_network(nn.Module):
 
     def forward_sia(self, input1, input2, onehot1, onehot2, state1):
 
+        # the representations of two input instances di and dj are xi and xj,
         if state1 == 'train':
             x1, q_w1, cnn_out1 = self.forward_one(input1, onehot1)
             out1 = self.sig(x1)
