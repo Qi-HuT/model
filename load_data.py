@@ -12,12 +12,12 @@ def load_pairs():
     ID = data.Field(sequential=False, is_target=True, use_vocab=False, dtype=torch.float64)
     ONEHOT = data.Field(sequential=False, is_target=True, use_vocab=False, dtype=torch.float32)
 
-
+    # TEXT1是对象，返回到数据结构中的应该是个对象类型，而不是单纯的文本类型
     field = {'label': ('label', LABEL), 'text1': ('text1', TEXT1), 'text2': ('text2', TEXT2),
              'onehot1':('onehot1', ONEHOT), 'onehot2':('onehot2', ONEHOT)}
     field1 = {'id': ('id', ID), 'text': ('text', TEXT1), 'label': ('label', LABEL),
               'onehot':('onehot', ONEHOT)}
-
+    # train_pairs 的数据格式为field字典，所以train_pairs有text1键，  然后他的属性值以为Text1
     train_pairs, valid_pairs = data.TabularDataset.splits(  # 切分语料库
         path='./data/',
         train='train_pairs.json',

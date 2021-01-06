@@ -6,7 +6,9 @@ def get_compare(train_data, model):
     model.eval()
     train_result = []
 
-    with torch.no_grad():
+    with torch.no_grad(): # 禁止梯度的计算，通常用来网络推断
+        # field1 = {'id': ('id', ID), 'text': ('text', TEXT1), 'label': ('label', LABEL),
+        #           'onehot': ('onehot', ONEHOT)}
         for batch in train_data:
             text = batch.text
             label1 = batch.onehot
@@ -57,6 +59,8 @@ def predict(test_data, train_data, train_result, model):
             train_list.append(label1[0])
 
         for batch_id, batch in enumerate(test_data):
+            # field1 = {'id': ('id', ID), 'text': ('text', TEXT1), 'label': ('label', LABEL),
+            #           'onehot': ('onehot', ONEHOT)}
             text = batch.text
             label = batch.label
             label2 = batch.onehot

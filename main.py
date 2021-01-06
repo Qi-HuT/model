@@ -41,11 +41,15 @@ sia_model.load_state_dict(siamese_model_dict)
 print('Start training siamese networks............')
 model, train_loss_record, val_loss_record = train(train_pairs_iter, valid_pairs_iter, sia_model, patience)
 
+# field1 = {'id': ('id', ID), 'text': ('text', TEXT1), 'label': ('label', LABEL),
+#               'onehot':('onehot', ONEHOT)}
 print('开始进行分类判断与分析．．．．')
 train_result = get_compare(train_data_iter, model)  # Sampling.method.Classification of paper
 
 print(len(train_result))
 print('开始预测分类．．．．')
+# field1 = {'id': ('id', ID), 'text': ('text', TEXT1), 'label': ('label', LABEL),
+#               'onehot':('onehot', ONEHOT)}
 predict(test_data_iter, train_data_iter, train_result, model)
 
 
